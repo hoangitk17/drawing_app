@@ -3,10 +3,10 @@ export default function useStage(stageRef, stageConfig) {
     console.log(stageRef.value);
     const stageElement = stageRef.value.getNode();
     return stageElement.toDataURL({
-      pixelRatio: 2 // or other value you need
-    })
+      pixelRatio: 2, // or other value you need
+    });
   }
   return {
     exportStage,
-  }
+  };
 }

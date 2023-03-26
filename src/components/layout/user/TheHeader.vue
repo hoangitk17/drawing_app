@@ -27,7 +27,7 @@ const items = reactive([
 ]);
 
 watch(group, () => {
-  drawer = false;
+  drawer.value = false;
 });
 </script>
 

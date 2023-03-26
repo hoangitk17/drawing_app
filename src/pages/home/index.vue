@@ -1,7 +1,7 @@
 <template>
   <div class="home-page d-flex">
     <div class="options">
-      <div v-for="feature in features">
+      <div v-for="feature in features" :key="feature.id">
         {{ feature.name }}
       </div>
       <v-btn @click="exportStage"> Button </v-btn>
