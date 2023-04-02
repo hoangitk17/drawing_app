@@ -1,10 +1,18 @@
 <template>
   <div class="home-page d-flex">
     <div class="options">
-      <div v-for="feature in features" :key="feature.id">
-        {{ feature.name }}
+      <div class="d-flex flex-column">
+        <v-btn
+          v-for="feature in features"
+          :key="feature.id"
+          class="mt-2 mx-2"
+          @click="feature.handleClick"
+        >
+          <v-icon :icon="feature.icon"></v-icon>
+        </v-btn>
       </div>
-      <v-btn @click="exportStage"> Button </v-btn>
+
+      <v-btn @click="exportStage"> Print </v-btn>
     </div>
     <div class="drawing-container">
       <v-stage
@@ -20,8 +28,21 @@
           "
           :config="layerConfig"
         >
-          <v-circle :config="circleConfig"></v-circle>
-          <v-arrow :config="arrowConfig"></v-arrow>
+          <v-circle
+            v-for="circle in circles"
+            :key="circle.id"
+            :config="circle.config"
+          ></v-circle>
+          <v-rect
+            v-for="rectangle in rectangles"
+            :key="rectangle.id"
+            :config="rectangle.config"
+          ></v-rect>
+          <v-arrow
+            v-for="arrow in arrows"
+            :key="arrow.id"
+            :config="arrow.config"
+          ></v-arrow>
         </v-layer>
       </v-stage>
     </div>
@@ -45,12 +66,84 @@ import { downloadURI } from "@/utils/helpers";
 const layerRef = ref(null);
 const stageRef = ref(null);
 
+const handleAddCircle = () => {
+  const newId = `circle_${new Date().getTime()}`;
+  const newCircle = {
+    id: newId,
+    config: {
+      x: 50,
+      y: 50,
+      stroke: "black",
+      radius: 70,
+      strokeWidth: 4,
+      draggable: true,
+    },
+  };
+  circles.push(newCircle);
+};
+const handleAddRectangle = () => {
+  const newId = `rectangle_${new Date().getTime()}`;
+  const newRectangle = {
+    id: newId,
+    config: {
+      x: 20,
+      y: 20,
+      width: 100,
+      height: 50,
+      fill: "green",
+      stroke: "black",
+      strokeWidth: 4,
+      draggable: true,
+    },
+  };
+  rectangles.push(newRectangle);
+};
+const handleAddArrow = () => {
+  const newId = `arrow_${new Date().getTime()}`;
+  const newArrow = {
+    id: newId,
+    config: {
+      x: 30,
+      y: 30,
+      points: [30, 30, 100, 100],
+      pointerLength: 20,
+      pointerWidth: 20,
+      tension: 100,
+      lineJoin: "round",
+      lineCap: "round",
+      fill: "white",
+      stroke: "black",
+      strokeWidth: 4,
+      draggable: true,
+    },
+  };
+  arrows.push(newArrow);
+};
+
 let features = reactive([
   {
     id: "1",
-    name: "33",
+    name: "circle",
+    icon: "mdi-circle-outline",
+    handleClick: handleAddCircle,
+  },
+  {
+    id: "2",
+    name: "rectangle",
+    icon: "mdi-rectangle-outline",
+    handleClick: handleAddRectangle,
+  },
+  {
+    id: "3",
+    name: "arrow",
+    icon: "mdi-arrow-top-right-bold-outline",
+    handleClick: handleAddArrow,
   },
 ]);
+
+let circles = reactive([]);
+let rectangles = reactive([]);
+let arrows = reactive([]);
 
 let stageConfig = reactive({
   width: 500,
